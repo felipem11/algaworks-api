@@ -1,9 +1,14 @@
 package com.algaworks.algafood.di.modelo;
 
-public class Cliente {
+import lombok.Getter;
 
+public class Cliente {
+	
+	@Getter
 	private String nome;
+	@Getter
 	private String email;
+	@Getter
 	private String telefone;
 	private boolean ativo = false;
 
@@ -11,18 +16,6 @@ public class Cliente {
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getTelefone() {
-		return telefone;
 	}
 
 	public boolean isAtivo() {
