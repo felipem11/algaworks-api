@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 4.30. Modelando e implementando a inclusão de recursos de restaurantes<p>
  * 4.33. Analisando solução para atualização parcial de recursos com PATCH<p>
  * 4.34. Finalizando a atualização parcial com a API de Reflections do Spring<p>
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -48,15 +50,15 @@ public class RestauranteController {
 	
 	@GetMapping
 	public List<Restaurante> listar(){
-		return restauranteRepository.listar();
+		return restauranteRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long id){
-		Restaurante restaurante = restauranteRepository.buscar(id);
+		Optional<Restaurante> restaurante = restauranteRepository.findById(id);
 		
-		if (restaurante != null) {
-			return ResponseEntity.ok(restaurante);
+		if (restaurante.isPresent()) {
+			return ResponseEntity.ok(restaurante.get());
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -76,16 +78,16 @@ public class RestauranteController {
 	
 	@PutMapping("/{restauranteId}")
 	public ResponseEntity<?> alterar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante){
-		Restaurante restauranteDB = restauranteRepository.buscar(restauranteId);
+		Optional<Restaurante> restauranteDB = restauranteRepository.findById(restauranteId);
 		
-		if (restaurante == null) {
+		if (restauranteDB.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		BeanUtils.copyProperties(restaurante, restauranteDB, "id");
+		BeanUtils.copyProperties(restaurante, restauranteDB.get(), "id");
 		
 		try {
-			restauranteDB = cadastroRestaurante.salvar(restauranteDB);
+			cadastroRestaurante.salvar(restauranteDB.get());
 			return ResponseEntity.ok(restauranteDB);
 		} catch(EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -96,8 +98,8 @@ public class RestauranteController {
 	public ResponseEntity<?> excluir(@PathVariable Long id){
 
 		try {
-			Restaurante restaurante = cadastroRestaurante.excluir(id);
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(restaurante);
+			cadastroRestaurante.excluir(id);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} catch (EntidadeNaoEncontradaException e){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		} catch (EntidadeEmUsoException e) {
@@ -108,11 +110,11 @@ public class RestauranteController {
 	@PatchMapping("/{id}")
 	public ResponseEntity<?> atualizarParcial(@PathVariable Long id,
 			@RequestBody Map<String, Object> campos){
-		Restaurante restauranteDB = restauranteRepository.buscar(id);
+		Optional<Restaurante> restauranteDB = restauranteRepository.findById(id);
 		
-		merge(campos, restauranteDB);
+		merge(campos, restauranteDB.get());
 		
-		return alterar(id, restauranteDB);
+		return alterar(id, restauranteDB.get());
 		
 		
 	}

@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,15 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
+/**
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * @see  https://github.com/felipem11/algaworks-api
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15 
+ */
+
+
 @RestController
 @RequestMapping("/cidades")
 public class CidadeController {
@@ -34,7 +44,7 @@ public class CidadeController {
 	
 	@GetMapping
 	private List<Cidade> listar(){
-		return cidadeRepository.listar(); 
+		return cidadeRepository.findAll(); 
 	}
 	
 	@PostMapping
@@ -46,16 +56,16 @@ public class CidadeController {
 	
 	@PutMapping("/{id}")
 	private ResponseEntity<Cidade> alterar(@PathVariable Long id, @RequestBody Cidade cidade){
-		Cidade cidadeDB = cidadeRepository.buscar(id);
-		if (cidadeDB == null) {
+		Optional<Cidade> cidadeDB = cidadeRepository.findById(id);
+		if (cidadeDB.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		BeanUtils.copyProperties(cidade, cidadeDB, "id");
+		BeanUtils.copyProperties(cidade, cidadeDB.get(), "id");
 		
-		cidadeDB = cadastroCidade.salvar(cidadeDB);
+		cadastroCidade.salvar(cidadeDB.get());
 		
-		return ResponseEntity.ok(cidadeDB);
+		return ResponseEntity.ok(cidadeDB.get());
 		
 	}
 	

@@ -10,6 +10,15 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 
+/**
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * @see  https://github.com/felipem11/algaworks-api
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15 
+ */
+
+
 @Service
 public class CadastroCidadeService {
 	
@@ -17,12 +26,12 @@ public class CadastroCidadeService {
 	private CidadeRepository cidadeRepository;
 	
 	public Cidade salvar(Cidade cidade) {
-		return cidadeRepository.salvar(cidade);
+		return cidadeRepository.save(cidade);
 	}
 	
 	public void excluir(Long id) {
 		try {
-			cidadeRepository.remover(id);
+			cidadeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(String.format("Cidade com o código: %d não encontrada", id));
 		} catch (DataIntegrityViolationException e) {

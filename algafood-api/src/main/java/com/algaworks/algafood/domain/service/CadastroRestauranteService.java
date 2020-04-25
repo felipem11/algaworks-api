@@ -14,6 +14,8 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 /**
  * 4.30. Modelando e implementando a inclusão de recursos de restaurantes<p>
+ * 5.4. Refatorando o código do projeto para usar o repositório do SDJ<p>
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -33,18 +35,18 @@ public class CadastroRestauranteService {
 		
 		Long cozinhaId = restaurante.getCozinha().getId();
 		
-		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cozinha: %d", cozinhaId)));
 		
-		if (cozinha == null) {
-			throw new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cozinha: %d", cozinhaId));
-		}
 		
-		return restauranteRepository.salvar(restaurante);
+		restaurante.setCozinha(cozinha);
+		
+		return restauranteRepository.save(restaurante);
 	}
 	
-	public Restaurante excluir(Long id) {
+	public void excluir(Long id) {
 		try {
-			return restauranteRepository.remover(id);
+			restauranteRepository.deleteById(id);
 		} catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um cadastro de restaurante com o código %d", id));

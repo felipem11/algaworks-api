@@ -1,14 +1,21 @@
 package com.algaworks.algafood.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.algaworks.algafood.domain.model.FormaPagamento;
 
-public interface FormaPagamentoRepository {
+/**
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * @see  https://github.com/felipem11/algaworks-api
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15 
+ */
 
-	List<FormaPagamento> listar();
-	FormaPagamento buscar(Long id);
-	FormaPagamento salvar(FormaPagamento formaPagamento);
-	void remover(FormaPagamento formaPagamento);
+@Repository
+public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, Long>{
+
+	
 	
 }

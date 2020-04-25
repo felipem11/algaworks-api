@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,14 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
 
+/**
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * @see  https://github.com/felipem11/algaworks-api
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15 
+ */
+
 @RestController
 @RequestMapping("/estados")
 public class EstadoController {
@@ -34,7 +43,7 @@ public class EstadoController {
 	
 	@GetMapping
 	private List<Estado> listar(){
-		return estadoRepository.listar();
+		return estadoRepository.findAll();
 	}
 	
 	@PostMapping
@@ -47,15 +56,15 @@ public class EstadoController {
 	private ResponseEntity<Estado> alterar(@PathVariable Long id, 
 			@RequestBody Estado estado){
 		
-		Estado estadoDB = estadoRepository.buscar(id);
-		if (estadoDB == null) {
+		Optional<Estado> estadoDB = estadoRepository.findById(id);
+		if (estadoDB.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		BeanUtils.copyProperties(estado, estadoDB, "id");
+		BeanUtils.copyProperties(estado, estadoDB.get(), "id");
 		
-		estado = cadastroEstadoService.salvar(estadoDB);
-		return ResponseEntity.ok(estado);
+		cadastroEstadoService.salvar(estadoDB.get());
+		return ResponseEntity.ok(estadoDB.get());
 		
 	}
 	

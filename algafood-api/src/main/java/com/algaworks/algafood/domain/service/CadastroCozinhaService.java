@@ -11,7 +11,8 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
 /**
- * 4.28. Refatorando a exclusão de cozinhas para usar domain services
+ * 4.28. Refatorando a exclusão de cozinhas para usar domain services<p>
+ * 5.4. Refatorando o código do projeto para usar o repositório do SDJ<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -25,13 +26,13 @@ public class CadastroCozinhaService {
 	private CozinhaRepository cozinhaRepository;
 	
 	public Cozinha salvar(Cozinha cozinha) {
-		return cozinhaRepository.salvar(cozinha);
+		return cozinhaRepository.save(cozinha);
 		
 	}
 	
 	public void excluir(Long id) {
 		try {
-			cozinhaRepository.remover(id);
+			cozinhaRepository.deleteById(id);
 		} catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um cadastro de cozinha com o código %d", id));

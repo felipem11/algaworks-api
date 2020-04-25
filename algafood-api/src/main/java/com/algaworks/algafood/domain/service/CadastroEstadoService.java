@@ -10,6 +10,14 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 
+/**
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * @see  https://github.com/felipem11/algaworks-api
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15 
+ */
+
 @Service
 public class CadastroEstadoService {
 	
@@ -17,12 +25,12 @@ public class CadastroEstadoService {
 	private EstadoRepository estadoRespository;
 	
 	public Estado salvar(Estado estado) {
-		return estadoRespository.salvar(estado);
+		return estadoRespository.save(estado);
 	}
 	
 	public void excluir(Long id) {
 		try {
-			estadoRespository.remover(id);
+			estadoRespository.deleteById(id);
 		} catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Estado com o código: %d não encontrado", id));

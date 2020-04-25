@@ -1,14 +1,20 @@
 package com.algaworks.algafood.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.algaworks.algafood.domain.model.Cidade;
 
-public interface CidadeRepository {
+/**
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * @see  https://github.com/felipem11/algaworks-api
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15 
+ */
 
-	List<Cidade> listar();
-	Cidade buscar(Long id);
-	Cidade salvar(Cidade cidade);
-	void remover(Long id);
+@Repository
+public interface CidadeRepository extends JpaRepository<Cidade, Long>{
+
 	
 }
