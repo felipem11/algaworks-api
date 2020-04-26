@@ -18,7 +18,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
  * 5.8. Conhecendo os prefixos de query methods<p>
  * 5.10. Externalizando consultas JPQL para um arquivo XML<p>
  * 5.11. Implementando um repositório SDJ customizado<p>
- * 
+ * 5.20. Estendendo o JpaRepository para customizar o repositório base<p>
  * @see  https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
  * @author  Felipe Martins
  * @version 1.0
@@ -27,7 +27,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 
 @Repository
 public interface RestauranteRepository 
-				extends JpaRepository<Restaurante, Long>, RestauranteRepositoryQueries,
+				extends CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries,
 				JpaSpecificationExecutor<Restaurante>{
 
 	List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);

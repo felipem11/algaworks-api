@@ -1,5 +1,8 @@
 package com.algaworks.algafood.infrastructure.repository;
 
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.comFreteGratis;
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +15,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepositoryQueries;
 
 /**
@@ -23,6 +29,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepositoryQueries;
  * 5.12. Implementando uma consulta dinâmica com JPQL<p>
  * 5.14. Adicionando restrições na cláusula where com Criteria API<p>
  * 5.15. Tornando a consulta com Criteria API com filtros dinâmicos<p>
+ * 5.19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @see  https://www.infoq.com/br/articles/java-10-var-type/
  * @author  Felipe Martins
@@ -32,6 +39,10 @@ import com.algaworks.algafood.domain.repository.RestauranteRepositoryQueries;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
+	
+//	 Unsatisfied dependency expressed through field 'restauranteRepository'; nested exception is org.springframework.beans.factory.BeanCurrentlyInCreationException: Error creating bean with name 'restauranteRepositoryImpl': Bean with name 'restauranteRepositoryImpl' has been injected into other beans [restauranteRepository] in its raw version as part of a circular reference, but has eventually been wrapped. This means that said other beans do not use the final version of the bean. This is often the result of over-eager type matching - consider using 'getBeanNamesOfType' with the 'allowEagerInit' flag turned off, for example.
+	@Autowired @Lazy
+	private RestauranteRepository restauranteRepository;
 	
 	@PersistenceContext
 	private EntityManager manager;
@@ -87,6 +98,10 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 		TypedQuery<Restaurante> query = manager.createQuery(criteria);
 		
 		return query.getResultList();
+	}
+	@Override
+	public List<Restaurante> findComFrenteGratis(String nome) {
+		return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
 	}
 	
 	

@@ -14,13 +14,12 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
-
 /**
  * 5.7. Usando as keywords para definir critérios de query methods<p>
  * 5.16. Conhecendo o uso do padrão Specifications (DDD) com SDJ<p>
  * 5.17. Implementando Specifications com SDJ<p>
+ * 5.19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy<p>
+ * 5.20. Estendendo o JpaRepository para customizar o repositório base<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -80,10 +79,18 @@ public class TesteController {
 	
 	@GetMapping("/restaurantes/com-frete-gratis")
 	public List<Restaurante> restaurantesComFreteGratis(String nome){
-		var comFreteGratis = new RestauranteComFreteGratisSpec();
-		var comNomeSemalhante = new RestauranteComNomeSemelhanteSpec(nome);
-		 
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemalhante));
+		  
+		return restauranteRepository.findComFrenteGratis(nome);
+	}
+	
+	@GetMapping("/restaurante/primmeiro")
+	public Optional<Restaurante> restaurantePrimeiro(String nome){
+		return restauranteRepository.buscarPrimeiro();
+	}
+	
+	@GetMapping("/cozinha/primeira")
+	public Optional<Cozinha> cozinhaPrimeiro(){
+		return cozinhaRepository.buscarPrimeiro();
 	}
 	
 	
