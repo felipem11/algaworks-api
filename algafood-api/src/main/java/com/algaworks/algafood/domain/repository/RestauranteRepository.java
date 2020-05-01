@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +18,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
  * 5.10. Externalizando consultas JPQL para um arquivo XML<p>
  * 5.11. Implementando um repositório SDJ customizado<p>
  * 5.20. Estendendo o JpaRepository para customizar o repositório base<p>
+ * 6.14. Resolvendo o Problema do N+1 com fetch join na JPQL<p>
  * @see  https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
  * @author  Felipe Martins
  * @version 1.0
@@ -29,6 +29,10 @@ import com.algaworks.algafood.domain.model.Restaurante;
 public interface RestauranteRepository 
 				extends CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries,
 				JpaSpecificationExecutor<Restaurante>{
+	
+//	@Query("from Restaurante r join fetch r.cozinha left join fetch r.formasPagamento")
+	@Query("from Restaurante r join fetch r.cozinha")
+	List<Restaurante> findAll();
 
 	List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 	List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinhaId);

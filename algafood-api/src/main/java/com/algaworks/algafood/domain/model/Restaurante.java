@@ -29,6 +29,7 @@ import lombok.EqualsAndHashCode;
 /**
  * 6.6. Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp<p>
  * 6.12. Alterando a estratégia de fetching para Lazy Loading<p>
+ * 6.14. Resolvendo o Problema do N+1 com fetch join na JPQL<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -76,7 +77,7 @@ public class Restaurante {
 	
 	
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "restaurante_forma_pagamento",
 				joinColumns = @JoinColumn(name = "restaurante_id"),
 				inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
