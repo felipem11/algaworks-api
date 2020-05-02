@@ -24,7 +24,8 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 /**
- * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
+ * 8.6. Desafio: refatorando os serviços REST<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -47,6 +48,11 @@ public class CidadeController {
 		return cidadeRepository.findAll(); 
 	}
 	
+	@GetMapping("{id}")
+	private Cidade buscarCidade(@PathVariable Long id){
+		return cadastroCidade.buscarOuFalhar(id); 
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	private Cidade salvar(@RequestBody Cidade cidade) {
@@ -55,30 +61,18 @@ public class CidadeController {
 	}
 	
 	@PutMapping("/{id}")
-	private ResponseEntity<Cidade> alterar(@PathVariable Long id, @RequestBody Cidade cidade){
-		Optional<Cidade> cidadeDB = cidadeRepository.findById(id);
-		if (cidadeDB.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
+	private Cidade alterar(@PathVariable Long id, @RequestBody Cidade cidade){
+		Cidade cidadeDB = cadastroCidade.buscarOuFalhar(id);
 		
-		BeanUtils.copyProperties(cidade, cidadeDB.get(), "id");
+		BeanUtils.copyProperties(cidade, cidadeDB, "id");
 		
-		cadastroCidade.salvar(cidadeDB.get());
-		
-		return ResponseEntity.ok(cidadeDB.get());
-		
+		return cadastroCidade.salvar(cidadeDB);
 	}
 	
 	@DeleteMapping("/{id}")
-	private ResponseEntity<?> excluir(@PathVariable Long id){
-		try {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	private void  excluir(@PathVariable Long id){
 			cadastroCidade.excluir(id);
-			return ResponseEntity.noContent().build();
-		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
 		
 	}
 

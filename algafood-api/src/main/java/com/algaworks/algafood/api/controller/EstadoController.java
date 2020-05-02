@@ -25,6 +25,7 @@ import com.algaworks.algafood.domain.service.CadastroEstadoService;
 
 /**
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
+ * 8.6. Desafio: refatorando os serviços REST<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -46,6 +47,11 @@ public class EstadoController {
 		return estadoRepository.findAll();
 	}
 	
+	@GetMapping("{id}")
+	private Estado buscar(@PathVariable Long id){
+		return cadastroEstadoService.buscarOuFalhar(id);
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	private Estado adicionar(@RequestBody Estado estado) {
@@ -53,31 +59,21 @@ public class EstadoController {
 	}
 	
 	@PutMapping("/{id}")
-	private ResponseEntity<Estado> alterar(@PathVariable Long id, 
+	private Estado alterar(@PathVariable Long id, 
 			@RequestBody Estado estado){
 		
-		Optional<Estado> estadoDB = estadoRepository.findById(id);
-		if (estadoDB.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
+		Estado estadoDB = cadastroEstadoService.buscarOuFalhar(id);
+
+		BeanUtils.copyProperties(estado, estadoDB, "id");
 		
-		BeanUtils.copyProperties(estado, estadoDB.get(), "id");
-		
-		cadastroEstadoService.salvar(estadoDB.get());
-		return ResponseEntity.ok(estadoDB.get());
+		return cadastroEstadoService.salvar(estadoDB);
 		
 	}
 	
 	@DeleteMapping("/{id}")
-	private ResponseEntity<?> excluir(@PathVariable Long id){
-		try {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	private void excluir(@PathVariable Long id){
 			cadastroEstadoService.excluir(id);
-			return ResponseEntity.noContent().build();
-		} catch(EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		} catch(EntidadeEmUsoException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
 		
 	}
 

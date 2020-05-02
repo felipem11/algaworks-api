@@ -16,6 +16,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
  * 4.30. Modelando e implementando a inclusão de recursos de restaurantes<p>
  * 5.4. Refatorando o código do projeto para usar o repositório do SDJ<p>
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
+ * 8.6. Desafio: refatorando os serviços REST<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -24,6 +25,10 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Service
 public class CadastroRestauranteService {
+
+	private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso";
+
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe um cadastro de restaurante com o código %d";
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -49,12 +54,18 @@ public class CadastroRestauranteService {
 			restauranteRepository.deleteById(id);
 		} catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de restaurante com o código %d", id));
+					String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id));
 		} catch(DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format("Cozinha de código %d não pode ser removida, pois está em uso", id)
+					String.format(MSG_COZINHA_EM_USO, id)
 					);
 		}
+	}
+	
+	public Restaurante buscarOuFalhar(Long id) {
+		return restauranteRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
 	}
 	
 	

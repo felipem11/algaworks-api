@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
@@ -32,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 4.33. Analisando solução para atualização parcial de recursos com PATCH<p>
  * 4.34. Finalizando a atualização parcial com a API de Reflections do Spring<p>
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
+ * 8.6. Desafio: refatorando os serviços REST<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -54,14 +56,8 @@ public class RestauranteController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Restaurante> buscar(@PathVariable Long id){
-		Optional<Restaurante> restaurante = restauranteRepository.findById(id);
-		
-		if (restaurante.isPresent()) {
-			return ResponseEntity.ok(restaurante.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Restaurante buscar(@PathVariable Long id){
+		return cadastroRestaurante.buscarOuFalhar(id);
 	}
 	
 	@PostMapping
@@ -76,46 +72,30 @@ public class RestauranteController {
 		}
 	}
 	
-	@PutMapping("/{restauranteId}")
-	public ResponseEntity<?> alterar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante){
-		Optional<Restaurante> restauranteDB = restauranteRepository.findById(restauranteId);
+	@PutMapping("/{id}")
+	public Restaurante alterar(@PathVariable Long id, @RequestBody Restaurante restaurante){
+		Restaurante restauranteDB = cadastroRestaurante.buscarOuFalhar(id);
 		
-		if (restauranteDB.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-		
-		BeanUtils.copyProperties(restaurante, restauranteDB.get(), "id", "formasPagamento", "endereco",
+		BeanUtils.copyProperties(restaurante, restauranteDB, "id", "formasPagamento", "endereco",
 								"dataCadastro", "dataAtualizacao");
 		
-		try {
-			cadastroRestaurante.salvar(restauranteDB.get());
-			return ResponseEntity.ok(restauranteDB);
-		} catch(EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		return cadastroRestaurante.salvar(restauranteDB);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> excluir(@PathVariable Long id){
-
-		try {
-			cadastroRestaurante.excluir(id);
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		} catch (EntidadeNaoEncontradaException e){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void excluir(@PathVariable Long id){
+		cadastroRestaurante.excluir(id);
 	}
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<?> atualizarParcial(@PathVariable Long id,
+	public Restaurante atualizarParcial(@PathVariable Long id,
 			@RequestBody Map<String, Object> campos){
-		Optional<Restaurante> restauranteDB = restauranteRepository.findById(id);
+		Restaurante restauranteDB = cadastroRestaurante.buscarOuFalhar(id);
 		
-		merge(campos, restauranteDB.get());
+		merge(campos, restauranteDB);
 		
-		return alterar(id, restauranteDB.get());
+		return alterar(id, restauranteDB);
 		
 		
 	}
