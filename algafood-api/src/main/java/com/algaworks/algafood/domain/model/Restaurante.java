@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
@@ -28,6 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.algaworks.algafood.core.validation.Groups;
 import com.algaworks.algafood.core.validation.Multiplo;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -48,6 +50,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 public class Restaurante {
 
 	@EqualsAndHashCode.Include
@@ -61,7 +64,7 @@ public class Restaurante {
 	@Column(nullable = false)
 	private String nome;
 	
-//	@PositiveOrZero(message = "{taxaFrete.invalida}")
+	@PositiveOrZero(message = "{taxaFrete.invalida}")
 //	@TaxaFrete
 	@Multiplo(numero = 5)
 	@Column(name = "taxa_frete", nullable = false)
