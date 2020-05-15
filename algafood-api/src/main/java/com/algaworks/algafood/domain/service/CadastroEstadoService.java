@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
@@ -14,6 +15,7 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
  * 8.6. Desafio: refatorando os serviços REST<p>
  * 8.10. Afinando a granularidade e definindo a hierarquia das exceptions de negócios<p>
+ * 11.1. Analisando e definindo melhor o escopo das transações<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -27,10 +29,12 @@ public class CadastroEstadoService {
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
+	@Transactional
 	public Estado salvar(Estado estado) {
 		return estadoRepository.save(estado);
 	}
 	
+	@Transactional
 	public void excluir(Long id) {
 		try {
 			estadoRepository.deleteById(id);
