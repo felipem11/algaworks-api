@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -50,6 +52,7 @@ public class CadastroRestauranteService {
 	public void excluir(Long id) {
 		try {
 			restauranteRepository.deleteById(id);
+			restauranteRepository.flush();
 		} catch(EmptyResultDataAccessException e) {
 			throw new RestauranteNaoEncontradoException(id);
 		} catch(DataIntegrityViolationException e) {
@@ -57,6 +60,19 @@ public class CadastroRestauranteService {
 					String.format(MSG_RESTAURANTE_EM_USO, id)
 					);
 		}
+	}
+	
+	@Transactional
+	public void ativar(Long RestauranteId) {
+		Restaurante restauranteDB = buscarOuFalhar(RestauranteId);
+		
+		restauranteDB.inativar();
+	}
+	@Transactional
+	public void inativar(Long RestauranteId) {
+		Restaurante restauranteDB = buscarOuFalhar(RestauranteId);
+		
+		restauranteDB.ativar();
 	}
 	
 	public Restaurante buscarOuFalhar(Long id) {

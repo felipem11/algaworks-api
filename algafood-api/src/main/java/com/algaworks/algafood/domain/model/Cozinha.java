@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
  * @since   2020-04-15 
  */
 
-@JsonRootName("cozinha")
+//@JsonRootName("cozinha")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity

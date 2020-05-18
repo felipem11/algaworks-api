@@ -39,9 +39,9 @@ insert into cidade (id, nome, estado_id) values (3, 'São Paulo', 2);
 insert into cidade (id, nome, estado_id) values (4, 'Campinas', 2);
 insert into cidade (id, nome, estado_id) values (5, 'Fortaleza', 3);
 
-insert into restaurante (id, data_cadastro, nome, taxa_frete, cozinha_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id) values (1, utc_timestamp, 'Thai Gourmet', 10, 1, "01443-002", "Av Paulista", "123", "Ap 63", "Centro", 1);
-insert into restaurante (id, data_cadastro, nome, taxa_frete, cozinha_id) values (2, utc_timestamp, 'Thai Delivery', 0, 1);
-insert into restaurante (id, data_cadastro, nome, taxa_frete, cozinha_id) values (3, utc_timestamp, 'Tuk Tuk Comida Indiana', 0, 2);
+insert into restaurante (id, data_cadastro, nome, taxa_frete, cozinha_id, ativo, endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id) values (1, utc_timestamp, 'Thai Gourmet', 10, 1, true, "01443-002", "Av Paulista", "123", "Ap 63", "Centro", 1);
+insert into restaurante (id, data_cadastro, nome, taxa_frete, cozinha_id, ativo) values (2, utc_timestamp, 'Thai Delivery', 0, 1, true);
+insert into restaurante (id, data_cadastro, nome, taxa_frete, cozinha_id, ativo) values (3, utc_timestamp, 'Tuk Tuk Comida Indiana', 0, 2, true);
 
 insert into forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
 insert into forma_pagamento (id, descricao) values (2, 'Cartão de débito');
