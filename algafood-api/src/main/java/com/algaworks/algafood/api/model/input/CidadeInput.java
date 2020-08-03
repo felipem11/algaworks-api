@@ -18,6 +18,6 @@ public class CidadeInput {
 	
 	@JsonIgnoreProperties(value = "nome", allowGetters = true)
 	@Valid
-	private EstadoInput estado;
+	private EstadoIdInput estado;
 
 }

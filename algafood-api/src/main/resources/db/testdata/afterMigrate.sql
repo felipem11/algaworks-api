@@ -56,3 +56,11 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Piz
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Pizza Queijo", "Gostosa", 23.90, true, 1);
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Arroz com Feijão", "Para o dia a dia", 15.00, true, 2);
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Caldo Verde", "Comida Fitness", 17.00, true, 2);
+
+insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+
+insert into usuario (id, nome, email, senha, data_cadastro) values
+(1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
+(2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
+(3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
+(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp); 

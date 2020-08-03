@@ -1,0 +1,23 @@
+package com.algaworks.algafood.api.model;
+import lombok.Getter;
+
+import lombok.Setter;
+/**
+ * 12.6. Adicionando endereço no modelo da representação do recurso de restaurante<p>
+ * @see  
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15 
+ */
+
+@Setter
+@Getter
+public class CidadeResumoModel {
+	
+	private Long id;
+	
+	private String nome;
+	
+	private String estado;
+
+}

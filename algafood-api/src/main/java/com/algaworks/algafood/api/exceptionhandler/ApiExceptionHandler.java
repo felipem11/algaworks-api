@@ -94,9 +94,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
 		String uri = ((ServletWebRequest) request).getRequest().getRequestURI();
 		
-		ex.getPath().forEach(p -> System.out.println(p.getFrom().getClass()));
+//		ex.getPath().forEach(p -> System.out.println(p.getFrom().getClass()));
+//		
+//		ex.getPath().forEach(ref -> System.out.println(ref.getFieldName()));
+		
+		String path = ex.getPath().stream()
+				.map(ref -> ref.getFieldName())
+				.collect(Collectors.joining("."));
+		
 		String detail = String.format("A propriedade '%s' é desconhecida para a URI '%s'.",
-				ex.getPropertyName(), uri);
+				path, uri);
 		
 		Problem problem = createProblemBuilder(status, problemType, detail)
 				.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)

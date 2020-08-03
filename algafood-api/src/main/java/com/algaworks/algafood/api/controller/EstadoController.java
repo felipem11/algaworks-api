@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algaworks.algafood.api.assembler.EstadoInputDisassembler;
 import com.algaworks.algafood.api.assembler.EstadoModelAssembler;
 import com.algaworks.algafood.api.model.EstadoModel;
-import com.algaworks.algafood.api.model.input.EstadoInput;
+import com.algaworks.algafood.api.model.input.EstadoIdInput;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
@@ -61,7 +61,7 @@ public class EstadoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	private EstadoModel adicionar(@RequestBody EstadoInput estadoInput) {
+	private EstadoModel adicionar(@RequestBody EstadoIdInput estadoInput) {
 		Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
 		estado = cadastroEstadoService.salvar(estado);
 		return estadoModelAssembler.toModel(estado);
@@ -69,7 +69,7 @@ public class EstadoController {
 	
 	@PutMapping("/{id}")
 	private EstadoModel alterar(@PathVariable Long id, 
-			@RequestBody EstadoInput estadoInput){
+			@RequestBody EstadoIdInput estadoInput){
 		
 		Estado estadoDB = cadastroEstadoService.buscarOuFalhar(id);
 		
