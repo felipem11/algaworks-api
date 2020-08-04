@@ -3,7 +3,9 @@ package com.algaworks.algafood.domain.model;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -17,18 +19,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.algaworks.algafood.core.validation.Groups;
-import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 
 import lombok.Data;
@@ -39,6 +33,7 @@ import lombok.EqualsAndHashCode;
  * 6.14. Resolvendo o Problema do N+1 com fetch join na JPQL<p>
  * 9.7. Agrupando e restringindo constraints que devem ser usadas na validação<p>
  * 9.8. Convertendo grupos de constraints para validação em cascata com @ConvertGroup<P>
+ * 12.12. Implementando os endpoints de associação de formas de pagamento em restaurantes<p>
  * @see  https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#section-builtin-constraints
  * @author  Felipe Martins
  * @version 1.0
@@ -95,13 +90,21 @@ public class Restaurante {
 	@JoinTable(name = "restaurante_forma_pagamento",
 				joinColumns = @JoinColumn(name = "restaurante_id"),
 				inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
-	private List<FormaPagamento> formasPagamento = new ArrayList<>();
+	private Set<FormaPagamento> formasPagamento = new HashSet<>();
 	
 	public void ativar() {
 		setAtivo(true);
 	}
 	public void inativar() {
 		setAtivo(false);
+	}
+	
+	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().remove(formaPagamento);
+	}
+
+	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().add(formaPagamento);
 	}
 	
 }

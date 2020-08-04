@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import com.algaworks.algafood.domain.repository.CustomJpaRepository;
 /**
- * 5.20. Estendendo o JpaRepository para customizar o repositório base
+ * 5.20. Estendendo o JpaRepository para customizar o repositório base<p>
+ * 12.11. Implementando regra de negócio para evitar usuários com e-mails duplicados<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -39,6 +40,11 @@ public class CustomJpaRepositoryimpl<T, ID> extends SimpleJpaRepository<T, ID>
 		
 		return Optional.ofNullable(entity);
 		
+	}
+
+	@Override
+	public void detach(T entity) {
+		manager.detach(entity);
 	}
 
 

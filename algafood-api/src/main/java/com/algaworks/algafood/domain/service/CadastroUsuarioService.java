@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,6 +16,7 @@ import com.algaworks.algafood.domain.repository.UsuarioRepository;
 
 /**
  * 12.9. Desafio: implementando os endpoints de usuarios<p>
+ * 12.11. Implementando regra de negócio para evitar usuários com e-mails duplicados<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -29,6 +32,16 @@ public class CadastroUsuarioService {
 	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
+		
+		usuarioRepository.detach(usuario);
+		
+		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+		
+		if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+			throw new NegocioException(
+					String.format("Já existe um usuário cadastrado com o email: %s", usuario.getEmail()));
+		}
+		
 		return usuarioRepository.save(usuario);
 	}
 	

@@ -11,6 +11,7 @@ import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
@@ -19,6 +20,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
  * 5.4. Refatorando o código do projeto para usar o repositório do SDJ<p>
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
  * 8.6. Desafio: refatorando os serviços REST<p>
+ * 12.12. Implementando os endpoints de associação de formas de pagamento em restaurantes<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -40,6 +42,9 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private CadastroCidadeService cadastroCidade;
+	
+	@Autowired
+	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 	
 	public Restaurante salvar(Restaurante restaurante) {
 		
@@ -79,6 +84,22 @@ public class CadastroRestauranteService {
 		Restaurante restauranteDB = buscarOuFalhar(RestauranteId);
 		
 		restauranteDB.ativar();
+	}
+	
+	@Transactional
+	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.removerFormaPagamento(formaPagamento);
+	}
+
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.adicionarFormaPagamento(formaPagamento);
 	}
 	
 	public Restaurante buscarOuFalhar(Long id) {
