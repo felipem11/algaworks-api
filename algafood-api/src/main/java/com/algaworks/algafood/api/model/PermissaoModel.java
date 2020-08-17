@@ -12,10 +12,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class GrupoModel {
+public class PermissaoModel {
 	
 	private Long id;
-	
 	private String nome;
+	private String descricao;
 
 }

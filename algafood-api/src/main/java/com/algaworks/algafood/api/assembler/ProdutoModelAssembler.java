@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.assembler;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,10 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafood.api.model.GrupoModel;
-import com.algaworks.algafood.domain.model.Grupo;
+import com.algaworks.algafood.api.model.ProdutoModel;
+import com.algaworks.algafood.domain.model.Produto;
 /**
- * 12.8. Desafio: implementando os endpoints de grupos
+ * 12.13. Desafio: implementando os endpoints de produtos<p>
  * @see  http://modelmapper.org/
  * @author  Felipe Martins
  * @version 1.0
@@ -19,18 +18,18 @@ import com.algaworks.algafood.domain.model.Grupo;
  */
 
 @Component
-public class GrupoModelAssembler {
+public class ProdutoModelAssembler {
 	
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public GrupoModel toModel(Grupo grupo) {
-		return modelMapper.map(grupo, GrupoModel.class);
+	public ProdutoModel toModel(Produto produto) {
+		return modelMapper.map(produto, ProdutoModel.class);
 	}
 	
-	public List<GrupoModel> toCollectionModel(Collection<Grupo> grupos) {
-		return grupos.stream()
-				.map(grupo -> toModel(grupo))
+	public List<ProdutoModel> toCollectionModel(List<Produto> produtos) {
+		return produtos.stream()
+				.map(produto -> toModel(produto))
 				.collect(Collectors.toList());
 	}
 	

@@ -11,12 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
+import com.algaworks.algafood.domain.model.Grupo;
+import com.algaworks.algafood.domain.model.Permissao;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 
 /**
  * 12.9. Desafio: implementando os endpoints de usuarios<p>
  * 12.11. Implementando regra de negócio para evitar usuários com e-mails duplicados<p>
+ * 12.16. Desafio: implementando os endpoints de associação de usuários com grupos<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -29,6 +32,9 @@ public class CadastroUsuarioService {
 	private static final String MSG_USUARIO_EM_USO = "Usuário de código: %d em uso";
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private CadastroGrupoService cadastroGrupoService;
 	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
@@ -72,5 +78,21 @@ public class CadastroUsuarioService {
 		return usuarioRepository.findById(id)
 				.orElseThrow(() -> new UsuarioNaoEncontradoException(id));
 	}
+	
+	@Transactional
+	public void associarGrupo(Long usuarioId, Long grupoId) {
+	    Usuario usuario = buscarOuFalhar(usuarioId);
+	    Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
+	    
+	    usuario.adicionarGrupo(grupo);
+	}  
+	@Transactional
+	public void desassociarGrupo(Long usuarioId, Long grupoId) {
+		Usuario usuario = buscarOuFalhar(usuarioId);
+		Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
+		
+		
+		usuario.removerGrupo(grupo);
+	}  
 
 }

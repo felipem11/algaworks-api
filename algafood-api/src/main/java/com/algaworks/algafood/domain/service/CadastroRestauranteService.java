@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 /**
@@ -21,6 +24,8 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
  * 8.6. Desafio: refatorando os serviços REST<p>
  * 12.12. Implementando os endpoints de associação de formas de pagamento em restaurantes<p>
+ * 12.17. Desafio: implementando endpoints de associação de usuários responsáveis com restaurantes<p>
+ * 12.18. Implementando ativação e inativação em massa de restaurantes<p>
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -45,6 +50,8 @@ public class CadastroRestauranteService {
 	
 	@Autowired
 	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
+	@Autowired
+	private CadastroUsuarioService cadastroUsuarioService;
 	
 	public Restaurante salvar(Restaurante restaurante) {
 		
@@ -77,13 +84,36 @@ public class CadastroRestauranteService {
 	public void ativar(Long RestauranteId) {
 		Restaurante restauranteDB = buscarOuFalhar(RestauranteId);
 		
+		restauranteDB.ativar();
+	}
+	
+	@Transactional
+	public void ativar(List<Long> restauranteIds) {
+		restauranteIds.forEach(this::ativar);
+	}
+	
+	@Transactional
+	public void inativar(Long restauranteId) {
+		Restaurante restauranteDB = buscarOuFalhar(restauranteId);
+		
 		restauranteDB.inativar();
 	}
 	@Transactional
-	public void inativar(Long RestauranteId) {
+	public void inativar(List<Long> restauranteIds) {
+		restauranteIds.forEach(this::inativar);
+	}
+
+	@Transactional
+	public void abertura(Long RestauranteId) {
 		Restaurante restauranteDB = buscarOuFalhar(RestauranteId);
 		
-		restauranteDB.ativar();
+		restauranteDB.abertura();
+	}
+	@Transactional
+	public void fechamento(Long RestauranteId) {
+		Restaurante restauranteDB = buscarOuFalhar(RestauranteId);
+		
+		restauranteDB.fechamento();
 	}
 	
 	@Transactional
@@ -100,6 +130,20 @@ public class CadastroRestauranteService {
 		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
 		
 		restaurante.adicionarFormaPagamento(formaPagamento);
+	}
+	@Transactional
+	public void desassociarUsuario(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
+		
+		restaurante.removerUsuarioResponsavel(usuario);
+	}
+	@Transactional
+	public void associarUsuarioResponsavel(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
+		
+		restaurante.adicionarUsuarioResponsavel(usuario);
 	}
 	
 	public Restaurante buscarOuFalhar(Long id) {

@@ -8,10 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafood.api.model.UsuarioModel;
-import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.api.model.PedidoResumoModel;
+import com.algaworks.algafood.domain.model.Pedido;
 /**
- * 12.9. Desafio: implementando os endpoints de usuarios<p>
+ * 12.20. Otimizando a query de pedidos e retornando model resumido na listagem<p>
  * @see  http://modelmapper.org/
  * @author  Felipe Martins
  * @version 1.0
@@ -19,18 +19,18 @@ import com.algaworks.algafood.domain.model.Usuario;
  */
 
 @Component
-public class UsuarioModelAssembler {
+public class PedidoResumoModelAssembler {
 	
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public UsuarioModel toModel(Usuario usuario) {
-		return modelMapper.map(usuario, UsuarioModel.class);
+	public PedidoResumoModel toModel(Pedido pedido) {
+		return modelMapper.map(pedido, PedidoResumoModel.class);
 	}
 	
-	public List<UsuarioModel> toCollectionModel(Collection<Usuario> usuarios) {
-		return usuarios.stream()
-				.map(usuario -> toModel(usuario))
+	public List<PedidoResumoModel> toCollectionModel(Collection<Pedido> pedidos) {
+		return pedidos.stream()
+				.map(pedido -> toModel(pedido))
 				.collect(Collectors.toList());
 	}
 	

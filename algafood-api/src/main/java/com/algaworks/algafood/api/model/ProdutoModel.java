@@ -1,8 +1,10 @@
 package com.algaworks.algafood.api.model;
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 /**
- * 12.15. Desafio: implementando os endpoints de associação de grupos com permissões
+ * 12.13. Desafio: implementando os endpoints de produtos
  * @see  https://github.com/felipem11/algaworks-api
  * @author  Felipe Martins
  * @version 1.0
@@ -12,10 +14,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class GrupoModel {
+public class ProdutoModel {
 	
 	private Long id;
-	
 	private String nome;
+	private String descricao;
+	private BigDecimal preco;
+	private boolean ativo;
 
 }

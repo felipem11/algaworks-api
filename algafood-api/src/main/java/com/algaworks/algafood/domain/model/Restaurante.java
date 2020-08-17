@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +33,7 @@ import lombok.EqualsAndHashCode;
  * 9.7. Agrupando e restringindo constraints que devem ser usadas na validação<p>
  * 9.8. Convertendo grupos de constraints para validação em cascata com @ConvertGroup<P>
  * 12.12. Implementando os endpoints de associação de formas de pagamento em restaurantes<p>
+ * 12.17. Desafio: implementando endpoints de associação de usuários responsáveis com restaurantes
  * @see  https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#section-builtin-constraints
  * @author  Felipe Martins
  * @version 1.0
@@ -71,6 +71,8 @@ public class Restaurante {
 	private Cozinha cozinha;
 	
 	private Boolean ativo = Boolean.TRUE;
+
+	private Boolean aberto = Boolean.TRUE;
 	
 	@Embedded
 	private Endereco endereco;
@@ -91,12 +93,24 @@ public class Restaurante {
 				joinColumns = @JoinColumn(name = "restaurante_id"),
 				inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "restaurante_usuario_responsavel",
+	joinColumns = @JoinColumn(name = "restaurante_id"),
+	inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	private Set<Usuario> usuariosResponsaveis = new HashSet<>();
 	
 	public void ativar() {
 		setAtivo(true);
 	}
 	public void inativar() {
 		setAtivo(false);
+	}
+	public void abertura() {
+		setAberto(true);
+	}
+	public void fechamento() {
+		setAberto(false);
 	}
 	
 	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
@@ -105,6 +119,22 @@ public class Restaurante {
 
 	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormasPagamento().add(formaPagamento);
+	}
+
+	public boolean removerUsuarioResponsavel(Usuario usuario) {
+		return getUsuariosResponsaveis().remove(usuario);
+	}
+
+	public boolean adicionarUsuarioResponsavel(Usuario usuario) {
+		return getUsuariosResponsaveis().add(usuario);
+	}
+
+	public boolean aceitaFormaPagamento(FormaPagamento formaPagamento) {
+	    return getFormasPagamento().contains(formaPagamento);
+	}
+
+	public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
+	    return !aceitaFormaPagamento(formaPagamento);
 	}
 	
 }
