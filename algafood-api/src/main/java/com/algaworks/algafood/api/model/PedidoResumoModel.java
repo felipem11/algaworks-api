@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 public class PedidoResumoModel {
 	
-	private Long id;
+	private String codigo;
 	private BigDecimal subTotal;
 	private BigDecimal taxaFrete;
 	private BigDecimal valorTotal;

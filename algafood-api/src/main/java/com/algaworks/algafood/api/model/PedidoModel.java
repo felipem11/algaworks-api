@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 public class PedidoModel {
 	
-	private Long id;
+	private String codigo;
 	
 	private String nome;
 	

@@ -8,7 +8,7 @@ import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.model.Pedido;
 /**
  * 12.8. Desafio: implementando os endpoints de grupos<p>
- * @see  http://modelmapper.org/
+ * @see  "http://modelmapper.org/"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 
@@ -16,16 +16,15 @@ import com.algaworks.algafood.domain.model.Pedido;
 
 @Component
 public class PedidoInputDisassembler {
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	public void copyToDomainObject(PedidoInput pedidoInput, Pedido pedido) {
-		modelMapper.map(pedidoInput, pedido);
-	}
-	
+
 	public Pedido toDomainObject(PedidoInput pedidoInput) {
 		return modelMapper.map(pedidoInput, Pedido.class);
 	}
-	
+
+	public void copyToDomainObject(PedidoInput pedidoInput, Pedido pedido) {
+		modelMapper.map(pedidoInput, pedido);
+	}
 }
