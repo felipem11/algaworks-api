@@ -26,7 +26,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
  * 12.12. Implementando os endpoints de associação de formas de pagamento em restaurantes<p>
  * 12.17. Desafio: implementando endpoints de associação de usuários responsáveis com restaurantes<p>
  * 12.18. Implementando ativação e inativação em massa de restaurantes<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

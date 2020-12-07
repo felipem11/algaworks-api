@@ -6,7 +6,7 @@ import java.util.List;
 import com.algaworks.algafood.domain.model.Restaurante;
 /**
  * 5.12. Implementando uma consulta dinâmica com JPQL
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

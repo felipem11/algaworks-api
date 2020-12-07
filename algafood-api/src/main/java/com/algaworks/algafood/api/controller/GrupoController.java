@@ -24,7 +24,7 @@ import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 /**
  * 12.8. Desafio: implementando os endpoints de grupos
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

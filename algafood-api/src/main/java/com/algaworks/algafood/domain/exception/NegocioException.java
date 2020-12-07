@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 /**
  * 8.8. Criando a exception NegocioException<p>
  * 8.10. Afinando a granularidade e definindo a hierarquia das exceptions de negócios<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

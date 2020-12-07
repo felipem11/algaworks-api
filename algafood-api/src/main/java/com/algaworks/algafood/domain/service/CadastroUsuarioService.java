@@ -20,7 +20,7 @@ import com.algaworks.algafood.domain.repository.UsuarioRepository;
  * 12.9. Desafio: implementando os endpoints de usuarios<p>
  * 12.11. Implementando regra de negócio para evitar usuários com e-mails duplicados<p>
  * 12.16. Desafio: implementando os endpoints de associação de usuários com grupos<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

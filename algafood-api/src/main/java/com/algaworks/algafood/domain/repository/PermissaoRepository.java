@@ -6,7 +6,7 @@ import com.algaworks.algafood.domain.model.Permissao;
 
 /**
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

@@ -10,7 +10,7 @@ import lombok.NonNull;
 
 /**
  * 4.16. Customizando a representação em XML com Wrapper e anotações do Jackson
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

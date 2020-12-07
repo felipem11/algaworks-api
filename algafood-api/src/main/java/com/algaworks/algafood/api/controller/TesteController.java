@@ -20,7 +20,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
  * 5.17. Implementando Specifications com SDJ<p>
  * 5.19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy<p>
  * 5.20. Estendendo o JpaRepository para customizar o repositório base<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

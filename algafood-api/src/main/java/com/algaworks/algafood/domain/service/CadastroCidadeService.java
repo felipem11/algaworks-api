@@ -16,7 +16,7 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
  * 8.6. Desafio: refatorando os serviços REST<p>
  * 11.1. Analisando e definindo melhor o escopo das transações<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

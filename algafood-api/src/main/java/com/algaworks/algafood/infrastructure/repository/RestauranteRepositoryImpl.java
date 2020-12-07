@@ -30,7 +30,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepositoryQueries;
  * 5.14. Adicionando restrições na cláusula where com Criteria API<p>
  * 5.15. Tornando a consulta com Criteria API com filtros dinâmicos<p>
  * 5.19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @see  https://www.infoq.com/br/articles/java-10-var-type/
  * @author  Felipe Martins
  * @version 1.0

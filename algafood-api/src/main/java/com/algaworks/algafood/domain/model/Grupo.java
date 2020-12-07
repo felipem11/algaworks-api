@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
  * 12.8. Desafio: implementando os endpoints de grupos<p>
  * 12.15. Desafio: implementando os endpoints de associação de grupos com permissões<p>
  * 12.16. Desafio: implementando os endpoints de associação de usuários com grupos<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

@@ -11,7 +11,7 @@ import com.algaworks.algafood.domain.repository.CustomJpaRepository;
 /**
  * 5.20. Estendendo o JpaRepository para customizar o repositório base<p>
  * 12.11. Implementando regra de negócio para evitar usuários com e-mails duplicados<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

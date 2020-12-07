@@ -3,7 +3,7 @@ package com.algaworks.algafood.api.exceptionhandler;
 import lombok.Getter;
 /**
  * 8.18. Padronizando o formato de problemas no corpo de respostas com a RFC 7807<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

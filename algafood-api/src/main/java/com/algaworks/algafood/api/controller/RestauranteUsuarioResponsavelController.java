@@ -29,7 +29,7 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 /**
  * 12.17. Desafio: implementando endpoints de associação de usuários responsáveis com restaurantes
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

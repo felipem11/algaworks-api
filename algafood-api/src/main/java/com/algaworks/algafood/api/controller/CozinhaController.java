@@ -38,7 +38,7 @@ import com.algaworks.algafood.domain.service.CadastroCozinhaService;
  * 4.30. Modelando e implementando a inclusão de recursos de restaurantes<p>
  * 5.4. Refatorando o código do projeto para usar o repositório do SDJ<p>
  * 8.5. Simplificando o código com o uso de @ResponseStatus em exceptions<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

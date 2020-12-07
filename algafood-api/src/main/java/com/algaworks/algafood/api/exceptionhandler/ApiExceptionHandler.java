@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.exc.PropertyBindingException;
  * 8.21. Tratando a exception InvalidFormatException na desserialização<p>
  * 9.5. Conhecendo e adicionando mais constraints de validação no modelo<p>
  * 9.11. Customizando e resolvendo mensagens de validação globais em Resource Bundle<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

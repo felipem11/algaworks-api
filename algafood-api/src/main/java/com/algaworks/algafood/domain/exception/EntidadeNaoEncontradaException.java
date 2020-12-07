@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
  * 8.5. Simplificando o código com o uso de @ResponseStatus em exceptions<p>
  * 8.6. Desafio: refatorando os serviços REST<p>
  * 8.10. Afinando a granularidade e definindo a hierarquia das exceptions de negócios<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

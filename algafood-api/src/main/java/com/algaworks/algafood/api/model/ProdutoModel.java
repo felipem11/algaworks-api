@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 /**
  * 12.13. Desafio: implementando os endpoints de produtos
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 

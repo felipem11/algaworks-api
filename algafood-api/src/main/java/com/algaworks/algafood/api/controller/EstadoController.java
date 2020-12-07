@@ -26,7 +26,7 @@ import com.algaworks.algafood.domain.service.CadastroEstadoService;
 /**
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ
  * 8.6. Desafio: refatorando os serviços REST<p>
- * @see  https://github.com/felipem11/algaworks-api
+ * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15 
