@@ -1,9 +1,10 @@
 package com.algaworks.algafood.api.model;
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-
+import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 /**
  * 12.20. Otimizando a query de pedidos e retornando model resumido na listagem<p>
  * @see  "https://github.com/felipem11/algaworks-api"
@@ -12,7 +13,7 @@ import lombok.Setter;
  * @since   2020-04-15 
  */
 
-
+@JsonFilter("pedidoFIlter")
 @Setter
 @Getter
 public class PedidoResumoModel {
