@@ -15,6 +15,10 @@ import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +30,7 @@ import java.util.List;
  * 13.2. Limitando os campos retornados pela API com @JsonFilter do Jackson<p>
  * 13.3. Limitando os campos retornados pela API com Squiggly<p>
  * 13.6. Implementando pesquisas complexas na API<p>
+ * 13.9. Desafio: implementando paginação e ordenação de pedidos<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -72,10 +77,15 @@ public class PedidoController {
 //	}
 
 	@GetMapping
-	private List<PedidoResumoModel> pesquisar(PedidoFilter filter){
-		List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filter));
+	private Page<PedidoResumoModel> pesquisar(@PageableDefault(size = 5) PedidoFilter filter,
+												  Pageable pageable){
+		Page<Pedido> pedidoPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filter), pageable);
 
-		return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
+		List<PedidoResumoModel> pedidosModel = pedidoResumoModelAssembler.toCollectionModel(pedidoPage.getContent());
+
+		PageImpl<PedidoResumoModel> pedidosModelPage = new PageImpl<>(pedidosModel, pageable,
+				pedidoPage.getTotalElements());
+		return pedidosModelPage;
 	}
 
 	@PostMapping
