@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * 5.18. Criando uma fábrica de Specifications
+ * 13.6. Implementando pesquisas complexas na API
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0

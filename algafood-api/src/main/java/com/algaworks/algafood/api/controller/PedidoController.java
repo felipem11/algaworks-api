@@ -25,6 +25,7 @@ import java.util.List;
  * 12.20. Otimizando a query de pedidos e retornando model resumido na listagem<p>
  * 13.2. Limitando os campos retornados pela API com @JsonFilter do Jackson<p>
  * 13.3. Limitando os campos retornados pela API com Squiggly<p>
+ * 13.6. Implementando pesquisas complexas na API<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0

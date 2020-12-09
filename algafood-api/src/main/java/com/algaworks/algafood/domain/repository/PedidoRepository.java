@@ -11,6 +11,7 @@ import java.util.Optional;
 /**
  * 12.8. Desafio: implementando os endpoints de grupos<p>
  * 12.20. Otimizando a query de pedidos e retornando model resumido na listagem
+ * 13.6. Implementando pesquisas complexas na API
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
