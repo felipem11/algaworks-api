@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * 13.14. Implementando consulta com dados agregados de vendas diárias<p>
  * 13.15. Desafio: adicionando os filtros na consulta de vendas diárias<p>
+ * 13.16. Tratando time offset na agregação de vendas diárias por data<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -30,10 +31,10 @@ public class VendaQueryServiceImpl implements VendaQueryService {
     private EntityManager manager;
 
     @Override
-    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filter) {
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filter, String timeOffSet) {
 
         /*
-            select date(p.data_criacao) as data_criacao,
+            select date(convert_tz(p.data_criacao, '+00:00', '-03:00')) as data_criacao,
                    count(p.id)          as total_vendas,
                    sum(p.valor_total)   as valor_total
             from pedido p
@@ -41,15 +42,19 @@ public class VendaQueryServiceImpl implements VendaQueryService {
               and p.data_criacao >= '2019-01-10'
               and p.data_criacao <= '2020-12-10'
               and (p.status in ('CONFIRMADO', 'ENTREGUE'))
-            group by date(p.data_criacao);
+            group by date(convert_tz(p.data_criacao, '+00:00', '-03:00'));
          */
 
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<VendaDiaria> query = builder.createQuery(VendaDiaria.class);
         Root<Pedido> root = query.from(Pedido.class);
 
+        Expression<Date> functionConvertTzDataCriacao = builder.function(
+                "convert_tz", Date.class, root.get("dataCriacao"),
+                builder.literal("+00:00"), builder.literal(timeOffSet));
+
         Expression<Date> functionDateDataCriacao = builder.function("date",
-                Date.class, root.get("dataCriacao"));
+                Date.class, functionConvertTzDataCriacao);
 
         CompoundSelection<VendaDiaria> selection = builder.construct(VendaDiaria.class,
                 functionDateDataCriacao,
