@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 12.20. Otimizando a query de pedidos e retornando model resumido na listagem<p>
@@ -31,6 +33,7 @@ import java.util.List;
  * 13.3. Limitando os campos retornados pela API com Squiggly<p>
  * 13.6. Implementando pesquisas complexas na API<p>
  * 13.9. Desafio: implementando paginação e ordenação de pedidos<p>
+ * 13.11. Implementando um conversor de propriedades de ordenação<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -79,6 +82,8 @@ public class PedidoController {
 	@GetMapping
 	private Page<PedidoResumoModel> pesquisar(@PageableDefault(size = 5) PedidoFilter filter,
 												  Pageable pageable){
+		pageable = traduzirPageable(pageable);
+
 		Page<Pedido> pedidoPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filter), pageable);
 
 		List<PedidoResumoModel> pedidosModel = pedidoResumoModelAssembler.toCollectionModel(pedidoPage.getContent());
@@ -111,6 +116,17 @@ public class PedidoController {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 
 		return pedidoModelAssembler.toModel(pedido);
+	}
+
+	private Pageable traduzirPageable(Pageable pageable){
+		Map<String, String> mapeamento = Map.of(
+				"codigo", "codigo",
+				"restaurante.nome", "restaurante.nome",
+				"nomeCliente", "nome.cliente",
+				"valorTotal", "valorTotal"
+		);
+
+		return PageableTranslator.translate(pageable, mapeamento);
 	}
 	
 
