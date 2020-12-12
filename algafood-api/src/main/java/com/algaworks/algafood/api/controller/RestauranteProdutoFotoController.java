@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.nio.file.Path;
 import java.util.UUID;
 
 /**
  * 14.2. Implementando upload de arquivo com multipart/form-data<p>
+ * 14.3. Validando o tamanho máximo do arquivo<P>
+ * 14.4. Desafio: Validando o content type do arquivo<P>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -24,7 +27,7 @@ public class RestauranteProdutoFotoController {
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void atualizarFoto (@PathVariable Long restauranteId,
-                               @PathVariable Long produtoId, FotoProdutoInput fotoProdutoInput){
+                               @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput){
 
         String nomeArquivo = UUID.randomUUID().toString() + "_"
                 + fotoProdutoInput.getArquivo().getOriginalFilename();
