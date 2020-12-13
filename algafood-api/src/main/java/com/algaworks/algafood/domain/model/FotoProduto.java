@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 /**
  * 14.5. Mapeando entidade FotoProduto e relacionamento um-para-um<p>
+ * 14.6. Implementando serviço de cadastro de foto de produto<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @see  "https://blog.algaworks.com/lazy-loading-com-mapeamento-onetoone/"
  * @author  Felipe Martins

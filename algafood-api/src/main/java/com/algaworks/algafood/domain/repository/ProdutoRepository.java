@@ -17,6 +17,7 @@ import java.util.Optional;
  * 5.11. Implementando um repositório SDJ customizado<p>
  * 5.20. Estendendo o JpaRepository para customizar o repositório base<p>
  * 6.14. Resolvendo o Problema do N+1 com fetch join na JPQL<p>
+ * 14.6. Implementando serviço de cadastro de foto de produto<p>
  * @see  "https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation"
  * @author  Felipe Martins
  * @version 1.0
@@ -24,7 +25,7 @@ import java.util.Optional;
  */
 
 @Repository
-public interface ProdutoRepository extends CustomJpaRepository<Produto, Long>{
+public interface ProdutoRepository extends CustomJpaRepository<Produto, Long>, ProdutoRepositoryQueries{
 
 	@Query("from Produto where restaurante.id = :restaurante and id = :produto")
 	Optional<Produto> findById(@Param("restaurante") Long restauranteId,
