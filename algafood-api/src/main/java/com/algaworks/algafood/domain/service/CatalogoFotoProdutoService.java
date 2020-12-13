@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 /**
  * 14.6. Implementando serviço de cadastro de foto de produto<p>
+ * 14.7. Excluindo e substituindo cadastro de foto de produto<p>
  * @see  "http://modelmapper.org/"
  * @author  Felipe Martins
  * @version 1.0
@@ -23,6 +25,16 @@ public class CatalogoFotoProdutoService {
 
     @Transactional
     public FotoProduto salvar(FotoProduto foto){
+
+        Long restauranteId = foto.getRestauranteId();
+        Long produtoId = foto.getProduto().getId();
+
+        Optional<FotoProduto> fotoExistente = produtoRepository.findFotoById(restauranteId, produtoId);
+
+        if (fotoExistente.isPresent()){
+            produtoRepository.delete(fotoExistente.get());
+        }
+
         return produtoRepository.save(foto);
     }
 

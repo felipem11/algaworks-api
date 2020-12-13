@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.model.FotoProduto;
 
 /**
  * 14.6. Implementando serviço de cadastro de foto de produto<p>
+ * 14.7. Excluindo e substituindo cadastro de foto de produto<p>
  * @see  "http://modelmapper.org/"
  * @author  Felipe Martins
  * @version 1.0
@@ -13,4 +14,6 @@ import com.algaworks.algafood.domain.model.FotoProduto;
 public interface ProdutoRepositoryQueries {
 
     FotoProduto save (FotoProduto foto);
+
+    void delete(FotoProduto foto);
 }
