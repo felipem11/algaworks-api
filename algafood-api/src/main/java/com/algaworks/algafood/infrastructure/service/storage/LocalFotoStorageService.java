@@ -2,6 +2,7 @@ package com.algaworks.algafood.infrastructure.service.storage;
 
 import com.algaworks.algafood.domain.service.FotoStorageService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
@@ -10,12 +11,14 @@ import java.nio.file.Path;
 
 /**
  * 14.8. Implementando o serviço de armazenagem de fotos no disco local<p>
+ * 14.9. Integrando o serviço de catálogo de fotos com o serviço de armazenagem<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15
  */
 
+@Service
 public class LocalFotoStorageService implements FotoStorageService {
 
     @Value("${algafood.storage.local.diretorio-fotos}")
