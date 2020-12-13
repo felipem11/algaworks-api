@@ -14,6 +14,7 @@ import java.util.Optional;
  * 14.6. Implementando serviço de cadastro de foto de produto<p>
  * 14.7. Excluindo e substituindo cadastro de foto de produto<p>
  * 14.9. Integrando o serviço de catálogo de fotos com o serviço de armazenagem<p>
+ * 14.10. Implementando a remoção e substituição de arquivos de fotos no serviço de armazenagem<p>
  * @see  "http://modelmapper.org/"
  * @author  Felipe Martins
  * @version 1.0
@@ -35,10 +36,12 @@ public class CatalogoFotoProdutoService {
         Long restauranteId = foto.getRestauranteId();
         Long produtoId = foto.getProduto().getId();
         String nomeNovoArquivo = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
+        String nomeArquivoExistente = null;
 
         Optional<FotoProduto> fotoExistente = produtoRepository.findFotoById(restauranteId, produtoId);
 
         if (fotoExistente.isPresent()){
+            nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
             produtoRepository.delete(fotoExistente.get());
         }
 
@@ -51,7 +54,7 @@ public class CatalogoFotoProdutoService {
                 .inputStream(dadosFoto)
                 .build();
 
-        fotoStorage.armazenar(novaFoto);
+        fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 
         return foto;
     }

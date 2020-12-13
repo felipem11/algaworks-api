@@ -9,6 +9,7 @@ import java.util.UUID;
 /**
  * 14.8. Implementando o serviço de armazenagem de fotos no disco local<p>
  * 14.9. Integrando o serviço de catálogo de fotos com o serviço de armazenagem<p>
+ * 14.10. Implementando a remoção e substituição de arquivos de fotos no serviço de armazenagem<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -19,9 +20,20 @@ public interface FotoStorageService {
 
     void armazenar(NovaFoto novaFoto);
 
+    void remover(String nomeArquivo);
+
+    default void substituir(String nomeArquivoAntigo, NovaFoto novaFoto){
+        this.armazenar(novaFoto);
+
+        if (nomeArquivoAntigo != null){
+            this.remover(nomeArquivoAntigo);
+        }
+    }
+
     default String gerarNomeArquivo(String nomeOriginal){
         return UUID.randomUUID().toString() + "_" + nomeOriginal;
     }
+
 
     @Builder
     @Getter
