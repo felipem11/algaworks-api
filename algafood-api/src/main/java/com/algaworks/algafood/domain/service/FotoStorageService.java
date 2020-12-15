@@ -11,6 +11,7 @@ import java.util.UUID;
  * 14.9. Integrando o serviço de catálogo de fotos com o serviço de armazenagem<p>
  * 14.10. Implementando a remoção e substituição de arquivos de fotos no serviço de armazenagem<p>
  * 14.23. Implementando a inclusão de objetos no bucket da Amazon S3<p>
+ * 14.25. Implementando a recuperação de foto no serviço de storage do S3<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 public interface FotoStorageService {
 
-    InputStream recuperar (String nomeArquivo);
+    FotoRecuperada recuperar (String nomeArquivo);
     void armazenar(NovaFoto novaFoto);
 
     void remover(String nomeArquivo);
@@ -43,5 +44,19 @@ public interface FotoStorageService {
         private String nomeArquivo;
         private String contentType;
         private InputStream inputStream;
+    }
+
+    @Builder
+    @Getter
+    class FotoRecuperada {
+        private InputStream inputStream;
+        private String url;
+
+        public boolean temUrl(){
+            return url != null;
+        }
+        public boolean temInputStream(){
+            return inputStream != null;
+        }
     }
 }
