@@ -19,7 +19,7 @@ import java.nio.file.Path;
  * @since   2020-04-15
  */
 
-//@Service
+
 public class LocalFotoStorageService implements FotoStorageService {
 
     @Autowired

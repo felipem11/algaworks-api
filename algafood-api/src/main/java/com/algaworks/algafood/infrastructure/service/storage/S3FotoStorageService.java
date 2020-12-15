@@ -8,7 +8,6 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.net.URL;
 
@@ -22,7 +21,7 @@ import java.net.URL;
  * @since   2020-04-15
  */
 
-@Service
+
 public class S3FotoStorageService implements FotoStorageService {
 
     @Autowired
