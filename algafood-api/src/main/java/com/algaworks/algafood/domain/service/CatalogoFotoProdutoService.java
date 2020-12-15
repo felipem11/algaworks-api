@@ -32,6 +32,16 @@ public class CatalogoFotoProdutoService {
     private FotoStorageService fotoStorage;
 
     @Transactional
+    public void excluir(Long restauranteId, Long produtoId) {
+        FotoProduto foto = buscarOuFalhar(restauranteId, produtoId);
+
+        produtoRepository.delete(foto);
+        produtoRepository.flush();
+
+        fotoStorage.remover(foto.getNomeArquivo());
+    }
+
+    @Transactional
     public FotoProduto salvar(FotoProduto foto, InputStream dadosFoto){
 
 
