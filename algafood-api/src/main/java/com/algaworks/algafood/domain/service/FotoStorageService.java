@@ -10,6 +10,7 @@ import java.util.UUID;
  * 14.8. Implementando o serviço de armazenagem de fotos no disco local<p>
  * 14.9. Integrando o serviço de catálogo de fotos com o serviço de armazenagem<p>
  * 14.10. Implementando a remoção e substituição de arquivos de fotos no serviço de armazenagem<p>
+ * 14.23. Implementando a inclusão de objetos no bucket da Amazon S3<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -40,6 +41,7 @@ public interface FotoStorageService {
     @Getter
     class NovaFoto {
         private String nomeArquivo;
+        private String contentType;
         private InputStream inputStream;
     }
 }

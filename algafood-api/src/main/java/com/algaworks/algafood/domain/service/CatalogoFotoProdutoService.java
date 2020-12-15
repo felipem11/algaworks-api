@@ -16,6 +16,7 @@ import java.util.Optional;
  * 14.7. Excluindo e substituindo cadastro de foto de produto<p>
  * 14.9. Integrando o serviço de catálogo de fotos com o serviço de armazenagem<p>
  * 14.10. Implementando a remoção e substituição de arquivos de fotos no serviço de armazenagem<p>
+ * 14.23. Implementando a inclusão de objetos no bucket da Amazon S3<p>
  * @see  "http://modelmapper.org/"
  * @author  Felipe Martins
  * @version 1.0
@@ -64,6 +65,7 @@ public class CatalogoFotoProdutoService {
 
         NovaFoto novaFoto = NovaFoto.builder()
                 .nomeArquivo(foto.getNomeArquivo())
+                .contentType(foto.getContentType())
                 .inputStream(dadosFoto)
                 .build();
 

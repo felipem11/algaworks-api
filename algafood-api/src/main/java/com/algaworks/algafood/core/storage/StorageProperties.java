@@ -3,7 +3,6 @@ package com.algaworks.algafood.core.storage;
 import com.amazonaws.regions.Regions;
 import lombok.Getter;
 import lombok.Setter;
-import org.castor.core.util.StringUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +37,7 @@ public class StorageProperties {
     public class S3 {
         private String clientId;
         private String clientSecret;
-        private StringUtil bucket;
+        private String bucket;
         private Regions region;
         private String diretorioFotos;
     }
