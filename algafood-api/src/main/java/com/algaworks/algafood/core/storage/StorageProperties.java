@@ -1,5 +1,6 @@
 package com.algaworks.algafood.core.storage;
 
+import com.amazonaws.regions.Regions;
 import lombok.Getter;
 import lombok.Setter;
 import org.castor.core.util.StringUtil;
@@ -10,6 +11,7 @@ import java.nio.file.Path;
 
 /**
  * 14.20. Criando bean de propriedades de configuração dos serviços de storage<p>
+ * 14.22. Definindo bean do client da Amazon S3 e configurando credenciais<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -37,7 +39,7 @@ public class StorageProperties {
         private String clientId;
         private String clientSecret;
         private StringUtil bucket;
-        private String region;
+        private Regions region;
         private String diretorioFotos;
     }
 }
