@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Singular;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
  * 15.3. Implementando o serviço de infraestrutura de envio de e-mails com Spring<p>
  * 15.4. Usando o serviço de envio de e-mails na confirmação de pedidos<p>
+ * 15.5. Processando template do corpo de e-mails com Apache FreeMarker<p>
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15
@@ -29,5 +31,8 @@ public interface EnvioEmailService {
         @NonNull
         private String assunto;
         private String corpo;
+
+        @Singular("variavel")
+        private Map<String, Object> variaveis;
     }
 }

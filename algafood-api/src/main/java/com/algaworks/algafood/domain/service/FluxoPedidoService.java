@@ -9,6 +9,7 @@ import com.algaworks.algafood.domain.service.EnvioEmailService.Mensagem;
 
 /**
  * 15.4. Usando o serviço de envio de e-mails na confirmação de pedidos<p>
+ * 15.5. Processando template do corpo de e-mails com Apache FreeMarker<p>
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15
@@ -30,10 +31,10 @@ public class FluxoPedidoService {
 
         Mensagem mensagem = Mensagem.builder()
                 .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("O pedido de codigo <strong>" + pedido.getCodigo() + "</strong> foi confirmado")
+                .corpo("pedido-confirmado.html")
+                .variavel("pedido", pedido)
                 .destinatario(pedido.getCliente().getEmail())
                 .build();
-        System.out.println(pedido.getCliente().getEmail());
 
         envioEmailService.enviar(mensagem);
     }
