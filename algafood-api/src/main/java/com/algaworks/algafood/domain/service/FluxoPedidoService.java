@@ -5,6 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.service.EnvioEmailService.Mensagem;
+
+/**
+ * 15.4. Usando o serviço de envio de e-mails na confirmação de pedidos<p>
+ * @author  Felipe Martins
+ * @version 1.0
+ * @since   2020-04-15
+ */
 
 @Service
 public class FluxoPedidoService {
@@ -12,10 +20,22 @@ public class FluxoPedidoService {
     @Autowired
     private EmissaoPedidoService emissaoPedido;
 
+    @Autowired
+    private EnvioEmailService envioEmailService;
+
     @Transactional
     public void confirmar(String codigoPedido) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
         pedido.confirmar();
+
+        Mensagem mensagem = Mensagem.builder()
+                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+                .corpo("O pedido de codigo <strong>" + pedido.getCodigo() + "</strong> foi confirmado")
+                .destinatario(pedido.getCliente().getEmail())
+                .build();
+        System.out.println(pedido.getCliente().getEmail());
+
+        envioEmailService.enviar(mensagem);
     }
 
     @Transactional

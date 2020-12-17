@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 /**
  * 15.3. Implementando o serviço de infraestrutura de envio de e-mails com Spring<p>
+ * 15.4. Usando o serviço de envio de e-mails na confirmação de pedidos<p>
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15
