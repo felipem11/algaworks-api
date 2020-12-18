@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
  * 15.3. Implementando o serviço de infraestrutura de envio de e-mails com Spring<p>
  * 15.4. Usando o serviço de envio de e-mails na confirmação de pedidos<p>
  * 15.5. Processando template do corpo de e-mails com Apache FreeMarker<p>
+ * 15.8. Desafio: implementando serviço de envio de e-mail fake<p>
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15
@@ -52,7 +53,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
         }
     }
 
-    private String processarTemplate(Mensagem mensagem) {
+    protected String processarTemplate(Mensagem mensagem) {
         try {
             Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
 
