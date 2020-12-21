@@ -14,8 +14,11 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import javax.validation.Valid;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +28,8 @@ import java.util.concurrent.TimeUnit;
  * 8.10. Afinando a granularidade e definindo a hierarquia das exceptions de negócios<p>
  * 17.2. Habilitando o cache com o cabeçalho Cache-Control e a diretiva max-age<p>
  * 17.6. Adicionando outras diretivas de Cache-Control na resposta HTTP<p>
+ * 17.8. Entendendo e preparando a implementação de Deep ETags<p>
+ * 17.9. Implementando requisições condicionais com Deep ETags<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -49,7 +54,19 @@ public class FormaPagamentoController {
 	private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 	
 	@GetMapping
-	private ResponseEntity<List<FormaPagamentoModel>> listar(){
+	private ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request){
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+
+		String eTag = "0";
+		OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+
+		if (dataUltimaAtualizacao != null){
+			eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
+		}
+
+		if(request.checkNotModified(eTag)){
+			return null;
+		}
 
 		List<FormaPagamento> todasFormasPagamento = formaPagamentoRepository.findAll();
 
@@ -58,6 +75,7 @@ public class FormaPagamentoController {
 
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				.eTag(eTag)
 				.body(formasPagamentoModel);
 	}
 
