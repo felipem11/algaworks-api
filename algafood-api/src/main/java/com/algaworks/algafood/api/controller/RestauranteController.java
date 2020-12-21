@@ -17,9 +17,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -44,12 +42,14 @@ import java.util.Map;
  * 9.7. Agrupando e restringindo constraints que devem ser usadas na validação<p>
  * 12.18. Implementando ativação e inativação em massa de restaurantes<p>
  * 16.3. Entendendo o funcionamento básico de CORS e habilitando na API<p>
+ * 16.4. Habilitando CORS em controladores e métodos com @CrossOrigin<p>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
  * @since   2020-04-15
  */
 
+//@CrossOrigin
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -88,21 +88,15 @@ public class RestauranteController {
 
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
-	public ResponseEntity<List<RestauranteModel>> listar(){
-		List<RestauranteModel> restauranteModel = restauranteModelAssembler
-				.toCollectionModel(restauranteRepository.findAll());
-
-		return ResponseEntity.ok()
-				.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://www.algafood.local:8000")
-				.body(restauranteModel);
-
+	public List<RestauranteModel> listar(){
+		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 
-//	@JsonView(RestauranteView.ApenasNome.class)
-//	@GetMapping(params = "projecao=apenas-nome")
-//	public List<RestauranteModel> listarAdpenasNome(){
-//		return listar();
-//	}
+	@JsonView(RestauranteView.ApenasNome.class)
+	@GetMapping(params = "projecao=apenas-nome")
+	public List<RestauranteModel> listarAdpenasNome(){
+		return listar();
+	}
 	
 	@GetMapping("/{id}")
 	public RestauranteModel buscar(@PathVariable Long id){
