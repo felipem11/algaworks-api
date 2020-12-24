@@ -11,6 +11,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Server;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -19,9 +20,10 @@ import java.util.Collections;
 /**
  * 18.5. Selecionando os endpoints da API para gerar a documentação<br>
  * 18.6. Descrevendo informações da API na documentação<br>
- * @author  Felipe Martins
+ *
+ * @author Felipe Martins
  * @version 1.0
- * @since   2020-04-15
+ * @since 2020-04-15
  */
 
 @Configuration
@@ -36,9 +38,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 .servers(serverLocal, testServer)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-                .paths(PathSelectors.any())
-                .build();
+                    .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+                    .paths(PathSelectors.any())
+                    .build()
+                .tags(
+                        new Tag("Cidades","Gerencias as cidades"),
+                        new Tag("Blog posts","Create, modify, delete and list blog posts")
+
+                );
     }
 
     private ApiInfo apiInfo() {
