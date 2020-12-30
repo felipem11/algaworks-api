@@ -2,24 +2,30 @@ package com.algaworks.algafood.core.openapi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Server;
-import springfox.documentation.service.Tag;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * 18.5. Selecionando os endpoints da API para gerar a documentação<br>
  * 18.6. Descrevendo informações da API na documentação<br>
+ * 18.13. Desafio: descrevendo códigos de status de respostas de forma global<br>
  *
  * @author Felipe Martins
  * @version 1.0
@@ -28,24 +34,31 @@ import java.util.Collections;
 
 @Configuration
 @EnableOpenApi
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig implements WebMvcConfigurer {
 
     @Bean
-    public Docket api() {
+    public Docket apiDocket() {
         Server serverLocal = new Server("local", "http://localhost:8080", "for local usages", Collections.emptyList(), Collections.emptyList());
         Server testServer = new Server("test", "https://example.org", "for testing", Collections.emptyList(), Collections.emptyList());
-        return new Docket(DocumentationType.OAS_30)
+        Docket docket = new Docket(DocumentationType.OAS_30)
                 .servers(serverLocal, testServer)
                 .apiInfo(apiInfo())
                 .select()
-                    .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-                    .paths(PathSelectors.any())
-                    .build()
+                .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+                .paths(PathSelectors.any())
+                .build()
                 .tags(
-                        new Tag("Cidades","Gerencias as cidades"),
-                        new Tag("Blog posts","Create, modify, delete and list blog posts")
+                        new Tag("Cidades", "Gerencias as cidades"),
+                        new Tag("Blog posts", "Create, modify, delete and list blog posts")
 
-                );
+                )
+                .useDefaultResponseMessages(false)
+                .globalResponses(HttpMethod.GET, globalGetResponseMessages())
+                .globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+                .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+                .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages());
+        return docket;
     }
 
     private ApiInfo apiInfo() {
@@ -56,6 +69,54 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 .contact(new Contact("Felipe", "https://www.linkedin.com/in/felipe-martins01", "felipem11@outlook.com"))
                 .build();
     }
+
+    private List<Response> globalGetResponseMessages() {
+        return Arrays.asList(
+                new ResponseBuilder()
+                        .code("500")
+                        .description("Erro interno do servidor")
+                        .build(),
+                new ResponseBuilder()
+                        .code("406")
+                        .description("Recurso não possui representação que poderia ser aceita pelo consumidor")
+                        .build()
+        );
+    }
+
+    private List<Response> globalPostPutResponseMessages() {
+        return Arrays.asList(
+                new ResponseBuilder()
+                        .code(String.valueOf(BAD_REQUEST.value()))
+                        .description("Requisição inválida (erro do cliente)")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(INTERNAL_SERVER_ERROR.value()))
+                        .description("Erro interno no servidor")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(NOT_ACCEPTABLE.value()))
+                        .description("Recurso não possui representação que poderia ser aceita pelo consumidor")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(UNSUPPORTED_MEDIA_TYPE.value()))
+                        .description("Requisição recusada porque o corpo está em um formato não suportado")
+                        .build()
+        );
+    }
+
+    private List<Response> globalDeleteResponseMessages() {
+        return Arrays.asList(
+                new ResponseBuilder()
+                        .code(String.valueOf(BAD_REQUEST.value()))
+                        .description("Requisição inválida (erro do cliente)")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(INTERNAL_SERVER_ERROR.value()))
+                        .description("Erro interno no servidor")
+                        .build()
+        );
+    }
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

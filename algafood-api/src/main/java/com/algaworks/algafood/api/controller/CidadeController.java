@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,8 @@ import java.util.List;
  * 5.5. Desafio: refatorando todos os repositórios para usar SDJ<p>
  * 8.6. Desafio: refatorando os serviços REST<p>
  * 8.10. Afinando a granularidade e definindo a hierarquia das exceptions de negócios<p>
- * 18.7. Descrevendo tags na documentação e associando com controllers<p>
+ * 18.7. Descrevendo tags na documentação e associando com controllers<br>
+ * 18.8. Descrevendo as operações de endpoints na documentação<br>
  * @see  "https://github.com/felipem11/algaworks-api"
  * @author  Felipe Martins
  * @version 1.0
@@ -48,13 +50,15 @@ public class CidadeController {
 	private List<Cidade> listar(){
 		return cidadeRepository.findAll(); 
 	}
-	
+
+	@ApiOperation("Consulta uma cidade")
 	@GetMapping("{id}")
 	private CidadeModel buscarCidade(@PathVariable Long id){
 		Cidade cidade = cadastroCidade.buscarOuFalhar(id);
 		return cidadeModelAssembler.toModel(cidade);
 	}
-	
+
+	@ApiOperation("Cadastra uma cidade")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	private CidadeModel salvar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -68,7 +72,8 @@ public class CidadeController {
 		}
 		
 	}
-	
+
+	@ApiOperation("Altera um cidade")
 	@PutMapping("/{id}")
 	private CidadeModel alterar(@PathVariable Long id, @RequestBody @Valid CidadeInput cidadeInput){
 		Cidade cidadeDB = cadastroCidade.buscarOuFalhar(id);
@@ -82,7 +87,8 @@ public class CidadeController {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-	
+
+	@ApiOperation("Exclui uma cidade")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	private void  excluir(@PathVariable Long id){
